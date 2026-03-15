@@ -1,49 +1,42 @@
-// Page Loading Logic
 window.onload = function () {
   const visitCount = localStorage.getItem("visitCount") || 0;
-  const guestBtn = document.getElementById("guest-option");
-
-  // Agar user 1 se zyada baar aaya hai, guest option chupa do
   if (visitCount >= 1) {
-    guestBtn.style.display = "none";
+    document.getElementById("guest-option").style.display = "none";
   }
   updateUI();
 };
 
-// Navigation
 function showPage(pageName) {
   const pages = ["home-page", "stats-page", "profile-page"];
   const icons = ["home-icon", "stats-icon", "profile-icon"];
-
   pages.forEach((p) => (document.getElementById(p).style.display = "none"));
   icons.forEach((i) => document.getElementById(i).classList.remove("active"));
-
   document.getElementById(pageName + "-page").style.display = "block";
   document.getElementById(pageName + "-icon").classList.add("active");
 }
 
-// Login with Guest Restriction
 function handleLogin(isGuest) {
   const nameInput = document.getElementById("username").value;
+  const emailInput = document.getElementById("useremail").value;
 
-  if (!isGuest && nameInput === "") {
-    return alert("Please enter your name to access the system!");
+  if (!isGuest && (nameInput === "" || emailInput === "")) {
+    return alert("Please enter both Name and Email!");
   }
 
-  // Update Visit Count
   let count = parseInt(localStorage.getItem("visitCount") || 0);
   localStorage.setItem("visitCount", count + 1);
 
-  // Profile Settings
-  const finalName = isGuest ? "Guest User" : nameInput;
-  document.getElementById("display-username").innerText = finalName;
+  document.getElementById("display-username").innerText = isGuest
+    ? "Guest User"
+    : nameInput;
+  document.getElementById("display-email").innerText = isGuest
+    ? "No Email Provided"
+    : emailInput;
 
-  // Switch to App
   document.getElementById("login-screen").style.display = "none";
   document.getElementById("app-content").style.display = "flex";
 }
 
-// KBS Logic
 function analyzeHealth() {
   const age = parseInt(document.getElementById("user-age").value);
   const sys = parseInt(document.getElementById("systolic").value);
@@ -56,30 +49,22 @@ function analyzeHealth() {
     color = "",
     advice = "";
 
-  if (age >= 60) {
-    if (sys >= 150 || dia >= 90) {
-      status = "High BP (Senior)";
-      color = "#dc2626";
-      advice = "Urgent consultation needed.";
-    } else {
-      status = "Normal (Senior)";
-      color = "#16a34a";
-      advice = "Health is stable.";
-    }
+  if (sys < 120 && dia < 80) {
+    status = "Optimal Health";
+    color = "#16a34a";
+    advice = "Sahi: Pani zyada peeyein aur rozana walk jari rakhein.";
+  } else if ((sys >= 120 && sys <= 139) || (dia >= 80 && dia <= 89)) {
+    status = "Pre-Hypertension";
+    color = "#ca8a04";
+    advice = "Mashwara: Namak kam karein aur fried food se parhez karein.";
   } else {
-    if (sys >= 140 || dia >= 90) {
-      status = "Hypertension";
-      color = "#dc2626";
-      advice = "Seek medical advice.";
-    } else if (sys >= 120 || dia >= 80) {
-      status = "Pre-Hypertension";
-      color = "#ca8a04";
-      advice = "Improve diet and exercise.";
-    } else {
-      status = "Healthy";
-      color = "#16a34a";
-      advice = "Great job!";
-    }
+    status = "High Blood Pressure";
+    color = "#dc2626";
+    advice = "Khatra: Doctor se rabta karein aur Cholesterol test karwayein.";
+  }
+
+  if (age >= 60 && sys < 150) {
+    advice += " (Seniors ke liye ye range behtar hai.)";
   }
 
   card.style.display = "block";
@@ -108,13 +93,13 @@ function updateUI() {
     .join("");
 }
 
-function clearHistory() {
-  localStorage.removeItem("bp_history");
-  updateUI();
+// Sirf Logout (Login Screen wapas layega)
+function logoutOnly() {
+  location.reload();
 }
 
+// Reset (Sab kuch mita dega taake naya demo ho sakay)
 function resetApp() {
-  // Ye button logout karega aur visit count reset kar dega (Sir ko demo dikhane ke liye)
-  localStorage.removeItem("visitCount");
+  localStorage.clear();
   location.reload();
 }

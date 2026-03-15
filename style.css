@@ -5,7 +5,7 @@
 
 body {
   background: #e2e8f0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,7 +13,7 @@ body {
   margin: 0;
 }
 
-/* Login Overlay */
+/* Login */
 .login-overlay {
   position: fixed;
   top: 0;
@@ -35,8 +35,8 @@ body {
 }
 .login-box input {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 12px;
+  margin: 8px 0;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-sizing: border-box;
@@ -50,6 +50,7 @@ body {
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  margin-top: 10px;
 }
 .guest-link {
   font-size: 0.8rem;
@@ -59,7 +60,7 @@ body {
   text-decoration: underline;
 }
 
-/* App UI */
+/* Mobile Frame */
 .mobile-frame {
   width: 350px;
   height: 650px;
@@ -123,31 +124,26 @@ body {
   color: white;
 }
 
-.history-item {
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  border-left: 4px solid var(--primary);
-}
-
-.profile-card {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  text-align: center;
-}
+/* Profile Buttons */
 .btn-logout {
+  width: 100%;
+  padding: 10px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin-top: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.btn-reset {
   width: 100%;
   padding: 10px;
   background: #fee2e2;
   color: #ef4444;
   border: none;
   border-radius: 8px;
-  margin-top: 20px;
+  margin-top: 10px;
   font-weight: bold;
   cursor: pointer;
 }

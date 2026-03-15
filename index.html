@@ -15,13 +15,9 @@
       <div class="login-box">
         <i class="fas fa-user-shield"></i>
         <h2>Clinical Login</h2>
-        <p>Enter your name to access KBS</p>
-        <input type="text" id="username" placeholder="Enter Your Name" />
-        <input
-          type="password"
-          id="password"
-          placeholder="Password (Optional)"
-        />
+        <p>Enter details to access KBS</p>
+        <input type="text" id="username" placeholder="Full Name" />
+        <input type="email" id="useremail" placeholder="Email Address" />
         <button onclick="handleLogin(false)">Access System</button>
         <p id="guest-option" class="guest-link" onclick="handleLogin(true)">
           Continue as Guest (First time only)
@@ -79,17 +75,17 @@
               style="font-size: 5rem; color: #4f46e5; margin-bottom: 10px"
             ></i>
             <h2 id="display-username">User Name</h2>
-            <p style="color: #64748b; font-size: 0.8rem">
-              Clinical Health Practitioner
+            <p id="display-email" style="color: #64748b; font-size: 0.8rem">
+              email@example.com
             </p>
             <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee" />
             <div style="text-align: left; font-size: 0.9rem">
               <p><strong>Account Status:</strong> Active</p>
-              <p><strong>System Role:</strong> Analyst</p>
-              <p><strong>Last Login:</strong> Today</p>
+              <p><strong>System Role:</strong> Practitioner</p>
             </div>
-            <button onclick="resetApp()" class="btn-logout">
-              Logout & Reset
+            <button onclick="logoutOnly()" class="btn-logout">Logout</button>
+            <button onclick="resetApp()" class="btn-reset">
+              Reset All Data
             </button>
           </div>
         </div>
