@@ -1,5 +1,5 @@
 /**
- * Heart Health Smart KBS - Final English Version
+ * Heart Health Smart KBS
  * Strict Guest Access Logic
  */
 
