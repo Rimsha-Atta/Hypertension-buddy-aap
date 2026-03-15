@@ -1,107 +1,120 @@
-// Function to update UI from memory when page loads
-document.addEventListener("DOMContentLoaded", updateHistoryUI);
+// Page Loading Logic
+window.onload = function () {
+  const visitCount = localStorage.getItem("visitCount") || 0;
+  const guestBtn = document.getElementById("guest-option");
 
-/**
- * Core KBS Logic Function
- * Analyzes Blood Pressure based on Age and Clinical Guidelines
- */
+  // Agar user 1 se zyada baar aaya hai, guest option chupa do
+  if (visitCount >= 1) {
+    guestBtn.style.display = "none";
+  }
+  updateUI();
+};
+
+// Navigation
+function showPage(pageName) {
+  const pages = ["home-page", "stats-page", "profile-page"];
+  const icons = ["home-icon", "stats-icon", "profile-icon"];
+
+  pages.forEach((p) => (document.getElementById(p).style.display = "none"));
+  icons.forEach((i) => document.getElementById(i).classList.remove("active"));
+
+  document.getElementById(pageName + "-page").style.display = "block";
+  document.getElementById(pageName + "-icon").classList.add("active");
+}
+
+// Login with Guest Restriction
+function handleLogin(isGuest) {
+  const nameInput = document.getElementById("username").value;
+
+  if (!isGuest && nameInput === "") {
+    return alert("Please enter your name to access the system!");
+  }
+
+  // Update Visit Count
+  let count = parseInt(localStorage.getItem("visitCount") || 0);
+  localStorage.setItem("visitCount", count + 1);
+
+  // Profile Settings
+  const finalName = isGuest ? "Guest User" : nameInput;
+  document.getElementById("display-username").innerText = finalName;
+
+  // Switch to App
+  document.getElementById("login-screen").style.display = "none";
+  document.getElementById("app-content").style.display = "flex";
+}
+
+// KBS Logic
 function analyzeHealth() {
   const age = parseInt(document.getElementById("user-age").value);
-  const systolic = parseInt(document.getElementById("systolic").value);
-  const diastolic = parseInt(document.getElementById("diastolic").value);
-  const resultCard = document.getElementById("result-card");
-  const title = document.getElementById("diagnosis-title");
-  const description = document.getElementById("diagnosis-desc");
+  const sys = parseInt(document.getElementById("systolic").value);
+  const dia = parseInt(document.getElementById("diastolic").value);
+  const card = document.getElementById("result-card");
 
-  // Validation Check
-  if (!age || !systolic || !diastolic) {
-    alert("Error: Please provide all patient metrics.");
-    return;
-  }
+  if (!age || !sys || !dia) return alert("Please fill all fields!");
 
-  let status = "";
-  let bgColor = "";
-  let medicalAdvice = "";
+  let status = "",
+    color = "",
+    advice = "";
 
-  // Knowledge-Based Reasoning Engine (Age-Sensitive)
   if (age >= 60) {
-    // Clinical Rules for Seniors
-    if (systolic >= 150 || diastolic >= 90) {
-      status = "Stage 2 Hypertension (Senior)";
-      bgColor = "#dc2626"; // Red
-      medicalAdvice =
-        "High clinical risk. Immediate medical consultation required.";
-    } else if (systolic >= 130 || diastolic >= 85) {
-      status = "Elevated BP (Senior)";
-      bgColor = "#ca8a04"; // Yellow
-      medicalAdvice = "Common for this age group. Continue daily monitoring.";
+    if (sys >= 150 || dia >= 90) {
+      status = "High BP (Senior)";
+      color = "#dc2626";
+      advice = "Urgent consultation needed.";
     } else {
-      status = "Stable Health (Senior)";
-      bgColor = "#16a34a"; // Green
-      medicalAdvice = "Patient is within healthy limits for their age.";
+      status = "Normal (Senior)";
+      color = "#16a34a";
+      advice = "Health is stable.";
     }
   } else {
-    // Standard Rules for Adults
-    if (systolic >= 140 || diastolic >= 90) {
-      status = "Stage 2 Hypertension";
-      bgColor = "#dc2626"; // Red
-      medicalAdvice =
-        "Danger: High blood pressure detected. Seek physician advice.";
-    } else if (systolic >= 120 || diastolic >= 80) {
+    if (sys >= 140 || dia >= 90) {
+      status = "Hypertension";
+      color = "#dc2626";
+      advice = "Seek medical advice.";
+    } else if (sys >= 120 || dia >= 80) {
       status = "Pre-Hypertension";
-      bgColor = "#ca8a04"; // Yellow
-      medicalAdvice =
-        "Warning: Improve lifestyle, increase exercise, and reduce salt.";
+      color = "#ca8a04";
+      advice = "Improve diet and exercise.";
     } else {
-      status = "Optimal Health";
-      bgColor = "#16a34a"; // Green
-      medicalAdvice = "Blood pressure is perfectly normal.";
+      status = "Healthy";
+      color = "#16a34a";
+      advice = "Great job!";
     }
   }
 
-  // Update Visualization
-  resultCard.style.display = "block";
-  resultCard.style.backgroundColor = bgColor;
-  title.innerText = status;
-  description.innerText = medicalAdvice;
+  card.style.display = "block";
+  card.style.backgroundColor = color;
+  document.getElementById("diagnosis-title").innerText = status;
+  document.getElementById("diagnosis-desc").innerText = advice;
 
-  // Save data locally
-  saveRecord(systolic, diastolic, status);
+  saveRecord(sys, dia, status);
 }
 
-/**
- * Saves analysis record to Browser Storage
- */
-function saveRecord(s, d, result) {
+function saveRecord(s, d, res) {
   let records = JSON.parse(localStorage.getItem("bp_history")) || [];
-  records.unshift({ s, d, result, date: new Date().toLocaleDateString() });
-  // Store only last 5 records
+  records.unshift({ s, d, res });
   localStorage.setItem("bp_history", JSON.stringify(records.slice(0, 5)));
-  updateHistoryUI();
+  updateUI();
 }
 
-/**
- * Refreshes the History Log on the screen
- */
-function updateHistoryUI() {
+function updateUI() {
   let records = JSON.parse(localStorage.getItem("bp_history")) || [];
-  const list = document.getElementById("history-list");
-  list.innerHTML = records
+  document.getElementById("history-list").innerHTML = records
     .map(
       (r) => `
-        <div class="history-item">
-            <span><b>${r.s}/${r.d}</b></span>
-            <span>${r.result}</span>
-        </div>
+        <div class="history-item"><span>${r.s}/${r.d}</span><span>${r.res}</span></div>
     `,
     )
     .join("");
 }
 
-/**
- * Clears all stored patient logs
- */
 function clearHistory() {
   localStorage.removeItem("bp_history");
-  updateHistoryUI();
+  updateUI();
+}
+
+function resetApp() {
+  // Ye button logout karega aur visit count reset kar dega (Sir ko demo dikhane ke liye)
+  localStorage.removeItem("visitCount");
+  location.reload();
 }
