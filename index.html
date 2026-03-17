@@ -5,108 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Heart Health Smart KBS</title>
     <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
   </head>
   <body>
-    <div id="login-screen" class="login-overlay">
-      <div class="login-box">
-        <i class="fas fa-user-shield"></i>
+    <div id="login-screen" class="full-bg">
+      <div class="login-card">
+        <div class="user-icon">👤</div>
         <h2>Clinical Login</h2>
         <p>Enter details to access KBS</p>
-        <input type="text" id="username" placeholder="Full Name" />
-        <input type="email" id="useremail" placeholder="Email Address" />
-        <button onclick="handleLogin(false)">Access System</button>
-        <p id="guest-option" class="guest-link" onclick="handleLogin(true)">
-          Continue as Guest (First time only)
+        <input type="text" id="login-name" placeholder="Full Name" />
+        <input
+          type="email"
+          id="login-email"
+          placeholder="Email Address"
+          oninput="checkEmail()"
+        />
+        <p
+          id="email-error"
+          style="color: #ff4d4d; display: none; font-size: 11px; margin: 0"
+        >
+          Invalid email format
         </p>
+        <button onclick="loginUser()" class="primary-btn">Access System</button>
       </div>
     </div>
 
-    <div class="mobile-frame" id="app-content" style="display: none">
-      <div class="app-header">
-        <i class="fas fa-heartbeat"></i>
-        <span>MyHeart Health</span>
-      </div>
+    <div id="app-screen" style="display: none">
+      <div class="mobile-frame">
+        <div class="app-header"><span>❤️ MyHeart Health</span></div>
 
-      <div class="main-content">
-        <div id="home-page">
-          <h3>Clinical Analysis</h3>
-          <div class="input-card">
-            <div class="input-group">
-              <label><i class="fas fa-user"></i> Patient Age</label>
-              <input type="number" id="user-age" placeholder="e.g. 25" />
-            </div>
-            <div class="input-group">
-              <label><i class="fas fa-arrow-up"></i> Systolic (Upper)</label>
-              <input type="number" id="systolic" placeholder="120" />
-            </div>
-            <div class="input-group">
-              <label><i class="fas fa-arrow-down"></i> Diastolic (Lower)</label>
-              <input type="number" id="diastolic" placeholder="80" />
-            </div>
-            <button onclick="analyzeHealth()" id="btn-analyze">
+        <div class="app-content">
+          <div id="home-tab">
+            <h3>Clinical Analysis</h3>
+            <label>Patient Age</label>
+            <input type="number" id="age" placeholder="e.g. 23" />
+            <label>↑ Systolic (Upper)</label>
+            <input type="number" id="systolic" placeholder="120" />
+            <label>↓ Diastolic (Lower)</label>
+            <input type="number" id="diastolic" placeholder="80" />
+            <button onclick="analyzeBP()" class="analyze-btn">
               Analyze Now
             </button>
-          </div>
 
-          <div id="result-card" class="result-card">
-            <h2 id="diagnosis-title"></h2>
-            <p id="diagnosis-desc"></p>
-          </div>
-        </div>
-
-        <div id="stats-page" style="display: none">
-          <div class="history-section">
-            <h4><i class="fas fa-history"></i> Recent Records</h4>
-            <div id="history-list"></div>
-            <button onclick="clearHistory()" class="btn-clear">
-              Clear History
-            </button>
-          </div>
-        </div>
-
-        <div id="profile-page" style="display: none">
-          <div class="profile-card">
-            <i
-              class="fas fa-user-circle"
-              style="font-size: 5rem; color: #4f46e5; margin-bottom: 10px"
-            ></i>
-            <h2 id="display-username">User Name</h2>
-            <p id="display-email" style="color: #64748b; font-size: 0.8rem">
-              email@example.com
-            </p>
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee" />
-            <div style="text-align: left; font-size: 0.9rem">
-              <p><strong>Account Status:</strong> Active</p>
-              <p><strong>System Role:</strong> Practitioner</p>
+            <div id="result-box" style="display: none; margin-top: 15px">
+              <div
+                id="status-badge"
+                style="
+                  padding: 10px;
+                  border-radius: 8px;
+                  color: white;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              ></div>
+              <p
+                id="expert-advice"
+                style="
+                  font-weight: bold;
+                  font-size: 13px;
+                  margin-top: 10px;
+                  color: #2c3e50;
+                "
+              ></p>
             </div>
-            <button onclick="logoutOnly()" class="btn-logout">Logout</button>
-            <button onclick="resetApp()" class="btn-reset">
-              Reset All Data
-            </button>
+          </div>
+
+          <div id="stats-tab" style="display: none">
+            <h3>Clinical Statistics</h3>
+            <div style="max-height: 350px; overflow-y: auto">
+              <table
+                style="
+                  width: 100%;
+                  font-size: 12px;
+                  border-collapse: collapse;
+                  background: white;
+                  border-radius: 10px;
+                "
+              >
+                <thead
+                  style="
+                    background: #5d6dfc;
+                    color: white;
+                    position: sticky;
+                    top: 0;
+                  "
+                >
+                  <tr>
+                    <th style="padding: 10px">Date</th>
+                    <th style="padding: 10px">BP</th>
+                    <th style="padding: 10px">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="stats-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="profile-tab" style="display: none">
+            <h3>Practitioner Profile</h3>
+            <div
+              style="
+                text-align: center;
+                background: white;
+                padding: 20px;
+                border-radius: 15px;
+              "
+            >
+              <div style="font-size: 50px; color: #5d6dfc">👤</div>
+              <h4 id="display-name" style="margin: 10px 0 5px 0"></h4>
+              <p id="display-email" style="color: #666; font-size: 13px"></p>
+              <hr style="border: 0.5px solid #eee; margin: 15px 0" />
+              <button
+                onclick="clearHistory()"
+                style="
+                  background: #fff0f0;
+                  color: #ff4d4d;
+                  border: 1px solid #ff4d4d;
+                  padding: 10px;
+                  border-radius: 10px;
+                  cursor: pointer;
+                  width: 100%;
+                  font-weight: bold;
+                  margin-bottom: 10px;
+                "
+              >
+                🗑️ Reset All History
+              </button>
+              <button
+                onclick="logout()"
+                style="
+                  background: #ff4d4d;
+                  color: white;
+                  border: none;
+                  padding: 10px;
+                  border-radius: 10px;
+                  cursor: pointer;
+                  width: 100%;
+                "
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="nav-bar">
-        <i
-          class="fas fa-home active"
-          id="home-icon"
-          onclick="showPage('home')"
-        ></i>
-        <i
-          class="fas fa-chart-line"
-          id="stats-icon"
-          onclick="showPage('stats')"
-        ></i>
-        <i
-          class="fas fa-user"
-          id="profile-icon"
-          onclick="showPage('profile')"
-        ></i>
+        <div class="bottom-nav">
+          <span onclick="showTab('home')" style="cursor: pointer">🏠</span>
+          <span onclick="showTab('stats')" style="cursor: pointer">📈</span>
+          <span onclick="showTab('profile')" style="cursor: pointer">👤</span>
+        </div>
       </div>
     </div>
 

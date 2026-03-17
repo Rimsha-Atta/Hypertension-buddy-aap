@@ -1,183 +1,107 @@
-:root {
-  --primary: #4f46e5;
-  --bg: #f8fafc;
-}
-
-body {
-  background: #e2e8f0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+body,
+html {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: sans-serif;
 }
 
-.login-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--primary);
+.full-bg {
+  background-color: #2b3fd4; /* Original Blue Color */
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
-.login-box {
-  background: white;
+
+.login-card {
+  background: rgba(255, 255, 255, 0.9);
   padding: 30px;
   border-radius: 20px;
-  width: 280px;
+  width: 300px;
   text-align: center;
 }
-.login-box input {
+
+.mobile-frame {
+  width: 320px;
+  height: 600px;
+  background: #f8f9fa;
+  border-radius: 30px;
+  border: 8px solid #333;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.app-header {
+  background: #5d6dfc;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.app-content {
+  padding: 20px;
+}
+
+input {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   margin: 8px 0;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-sizing: border-box;
 }
-.login-box button {
+
+.primary-btn,
+.analyze-btn {
   width: 100%;
   padding: 12px;
-  background: var(--primary);
+  background: #5d6dfc;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: bold;
-}
-.guest-link {
-  font-size: 0.8rem;
-  color: #64748b;
-  margin-top: 15px;
-  cursor: pointer;
-  text-decoration: underline;
 }
 
-.mobile-frame {
-  width: 350px;
-  height: 650px;
-  background: var(--bg);
-  border-radius: 30px;
-  border: 6px solid #1e293b;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.app-header {
-  background: var(--primary);
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
-.main-content {
-  padding: 20px;
-  flex: 1;
-  overflow-y: auto;
-}
-
-.input-card {
-  background: white;
-  padding: 15px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-.input-group label {
-  display: block;
-  font-size: 0.8rem;
-  margin-bottom: 5px;
-  color: #64748b;
-}
-.input-group input {
-  width: 100%;
+#status-badge {
   padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #eee;
   border-radius: 8px;
-  box-sizing: border-box;
-}
-
-#btn-analyze {
-  width: 100%;
-  padding: 12px;
-  background: var(--primary);
   color: white;
-  border: none;
-  border-radius: 8px;
+  text-align: center;
   font-weight: bold;
 }
 
-.result-card {
-  padding: 15px;
-  border-radius: 12px;
-  margin-top: 10px;
-  display: none;
-  text-align: center;
-  color: white;
-}
-
-.history-item {
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  border-left: 4px solid var(--primary);
-}
-
-.btn-clear {
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
   width: 100%;
-  padding: 8px;
-  background: #f1f5f9;
-  color: #64748b;
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 0;
+  background: white;
+  border-top: 1px solid #ddd;
+}
+/* Styling for profile and navigation */
+.profile-info {
+  text-align: center;
+  margin-top: 20px;
+}
+.logout-btn {
+  background: #ff4d4d;
+  color: white;
   border: none;
+  padding: 10px;
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
 }
-.btn-logout {
-  width: 100%;
-  padding: 10px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  margin-top: 20px;
-  font-weight: bold;
+.bottom-nav span {
   cursor: pointer;
+  transition: 0.2s;
 }
-.btn-reset {
-  width: 100%;
-  padding: 10px;
-  background: #fee2e2;
-  color: #ef4444;
-  border: none;
-  border-radius: 8px;
-  margin-top: 10px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.nav-bar {
-  height: 60px;
-  background: white;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border-top: 1px solid #eee;
-}
-.nav-bar i {
-  font-size: 1.2rem;
-  color: #cbd5e1;
-  cursor: pointer;
-}
-.nav-bar i.active {
-  color: var(--primary);
+.bottom-nav span:hover {
+  transform: scale(1.2);
 }
